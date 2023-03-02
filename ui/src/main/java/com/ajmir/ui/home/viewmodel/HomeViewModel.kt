@@ -30,7 +30,7 @@ class HomeViewModel(
 
     // region Lifecycle
 
-    fun onViewVisible() {
+    init {
         viewModelScope.launch(Dispatchers.IO) {
             _viewState.emit(HomeViewState.Loading)
             loadAccounts(skipError = false)
@@ -52,13 +52,18 @@ class HomeViewModel(
         _viewState.update { state ->
             when (state) {
                 is HomeViewState.Data -> {
-
                     val accounts = state.accounts
-                    // Get transactions
-                    accounts.firstOrNull { it.id == id }
-                        ?.also { loadTransactions(it) }
-                    // Update selected account
-                    state.copy(accounts = accounts.map { it.copy(isSelected = it.id == id) },)
+                    val currentAccount = accounts.firstOrNull { it.isSelected }
+                    if (currentAccount?.id != id) {
+                        // Get transactions
+                        accounts.firstOrNull { it.id == id }
+                            ?.also { selectedAccount -> loadTransactions(selectedAccount) }
+                        // Update selected account
+                        state.copy(accounts = accounts.map { it.copy(isSelected = it.id == id) },)
+                    } else {
+                        // The current account selected is the same as the asked one
+                        state
+                    }
                 }
                 else -> {
                     state

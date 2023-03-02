@@ -1,10 +1,8 @@
 package com.ajmir.ui.home
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -23,11 +21,6 @@ import com.ajmir.ui.R
 fun HomeScreen() {
     val viewModel: HomeViewModel = get()
     val viewState by viewModel.viewState.collectAsState()
-
-    Log.e("test", "viewState: $viewState", )
-    LaunchedEffect(Unit) {
-        viewModel.onViewVisible()
-    }
 
     Column {
         Logo()

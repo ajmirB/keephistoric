@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/data/account" />
             <option value="$PROJECT_DIR$/data/account/account" />
             <option value="$PROJECT_DIR$/data/account/account-impl" />
+            <option value="$PROJECT_DIR$/data/common" />
             <option value="$PROJECT_DIR$/data/networking" />
             <option value="$PROJECT_DIR$/data/networking/retrofit" />
             <option value="$PROJECT_DIR$/data/transaction" />

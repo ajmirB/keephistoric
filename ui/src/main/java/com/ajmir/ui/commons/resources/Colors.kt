@@ -9,6 +9,10 @@ object Colors {
     val primary = Color(red = 0x12, green = 0x42, blue = 0xBD, alpha = 0xFF)
     val secondary = Color(red = 0x6F, green = 0x79, blue = 0x96, alpha = 0xFF)
 
+    val title = Color(red = 0x6F, green = 0x79, blue = 0x96, alpha = 0xFF)
+    val text = Color.Gray
+    val section = Color(red = 0x98, green = 0xA9, blue = 0xDA, alpha = 0xFF)
+
     val loadingProgressBar = primary
     val error = Color(red = 0xBB, green = 0x5B, blue = 0x5B, alpha = 0xFF)
 }

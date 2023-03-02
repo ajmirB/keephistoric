@@ -1,19 +1,12 @@
 package com.ajmir.ui.home.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajmir.account.AccountRepository
-import com.ajmir.account.model.AccountEntity
 import com.ajmir.common.manager.DateManager
 import com.ajmir.transaction.TransactionRepository
-import com.ajmir.transaction.model.Transaction
-import com.ajmir.transaction.model.TransactionStatus
-import com.ajmir.transaction.model.TransactionType
-import com.ajmir.transaction.model.Transactions
+import com.ajmir.ui.home.mapper.HomeMapper
 import com.ajmir.ui.home.model.HomeAccountState
-import com.ajmir.ui.home.model.HomeTransactionState
-import com.ajmir.ui.home.model.HomeTransactionsState
 import com.ajmir.ui.home.model.HomeViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -22,7 +15,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val accountRepository: AccountRepository,
     private val transactionRepository: TransactionRepository,
-    private val dateManager: DateManager
+    private val mapper: HomeMapper
 ): ViewModel() {
 
     private val _viewState = MutableStateFlow<HomeViewState>(HomeViewState.Loading)
@@ -96,7 +89,7 @@ class HomeViewModel(
     ) {
         accountRepository.getAccounts()
             .onSuccess { accounts ->
-                val accountModel = accounts.map(::mapAccount)
+                val accountModel = accounts.map(mapper::mapAccount)
                 val data = HomeViewState.Data(
                     accounts = accountModel,
                     transactions = null
@@ -121,9 +114,9 @@ class HomeViewModel(
                             .getAll(account.transactionUrl)
                             .let { result ->
                                 if (result.getOrNull() != null) {
-                                    mapTransactions(result.getOrNull()!!)
+                                    mapper.mapTransactions(result.getOrNull()!!)
                                 } else if (result.exceptionOrNull() != null){
-                                    mapErrorTransactions(result.exceptionOrNull()!!)
+                                    mapper.mapErrorTransactions(result.exceptionOrNull()!!)
                                 } else {
                                     null
                                 }
@@ -152,44 +145,4 @@ class HomeViewModel(
             }
         return loadedAccounts.firstOrNull { it.isSelected }
     }
-
-    // region Mapper
-
-    private fun mapAccount(account: AccountEntity) =
-        HomeAccountState(
-            id = account.id,
-            name = account.name,
-            isSelected = false,
-            transactionUrl = account.transactionUrl
-        )
-
-    private fun mapTransactions(transactions: Transactions): HomeTransactionsState {
-        val nbToTake = 2
-        return HomeTransactionsState(
-            credits = transactions.transactions
-                .filter { it.type == TransactionType.CREDIT && it.status != TransactionStatus.CANCELED }
-                .sortedBy { it.date }
-                .take(nbToTake)
-                .map(::mapTransaction),
-            debits = transactions.transactions
-                .filter { it.type == TransactionType.DEBIT && it.status != TransactionStatus.CANCELED }
-                .sortedBy { it.date }
-                .take(nbToTake)
-                .map(::mapTransaction)
-        )
-    }
-
-    private fun mapErrorTransactions(error: Throwable): HomeTransactionsState {
-        return HomeTransactionsState(hasError = true)
-    }
-
-    private fun mapTransaction(transaction: Transaction): HomeTransactionState {
-        return HomeTransactionState(
-            id = transaction.id,
-            amount = "${transaction.amount} ${transaction.currency}",
-            date = "${dateManager.formatDate(transaction.date)} - ${dateManager.formatTime(transaction.date)} "
-        )
-    }
-
-    // endregion
 }

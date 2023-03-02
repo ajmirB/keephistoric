@@ -48,6 +48,7 @@ android {
 
 dependencies {
     implementation project(path: ':ui')
+    implementation project(path: ':data:common')
     implementation project(path: ':data:networking:retrofit')
     implementation project(path: ':data:account:account-impl')
     implementation project(path: ':data:transaction:transaction-impl')

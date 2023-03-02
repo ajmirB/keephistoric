@@ -4,13 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajmir.account.AccountRepository
 import com.ajmir.account.model.AccountEntity
+import com.ajmir.common.manager.DateManager
 import com.ajmir.transaction.TransactionRepository
 import com.ajmir.transaction.model.Transaction
+import com.ajmir.transaction.model.TransactionStatus
 import com.ajmir.transaction.model.TransactionType
 import com.ajmir.transaction.model.Transactions
-import com.ajmir.ui.home.model.HomeAccount
-import com.ajmir.ui.home.model.HomeTransaction
-import com.ajmir.ui.home.model.HomeTransactions
+import com.ajmir.ui.home.model.HomeAccountState
+import com.ajmir.ui.home.model.HomeTransactionState
+import com.ajmir.ui.home.model.HomeTransactionsState
 import com.ajmir.ui.home.model.HomeViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +22,8 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val accountRepository: AccountRepository,
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val dateManager: DateManager
 ): ViewModel() {
 
     private val _viewState = MutableStateFlow<HomeViewState>(HomeViewState.Loading)
@@ -93,7 +96,7 @@ class HomeViewModel(
             }
     }
 
-    private fun loadTransactions(account: HomeAccount) {
+    private fun loadTransactions(account: HomeAccountState) {
         viewModelScope.launch(Dispatchers.IO) {
             _viewState.update { state ->
                 when (state) {
@@ -113,39 +116,43 @@ class HomeViewModel(
         }
     }
 
+    // region Mapper
+
     private fun mapAccount(account: AccountEntity) =
-        HomeAccount(
+        HomeAccountState(
             id = account.id,
             name = account.name,
             isSelected = false,
             transactionUrl = account.transactionUrl
         )
 
-    private fun mapTransactions(transactions: Transactions): HomeTransactions {
+    private fun mapTransactions(transactions: Transactions): HomeTransactionsState {
         val nbToTake = 2
         val credit = transactions.transactions
-            .filter { it.type == TransactionType.CREDIT }
+            .filter { it.type == TransactionType.CREDIT && it.status != TransactionStatus.CANCELED }
             .sortedBy { it.date }
             .take(nbToTake)
             .map(::mapTransaction)
 
         val debit = transactions.transactions
-            .filter { it.type == TransactionType.DEBIT }
+            .filter { it.type == TransactionType.DEBIT && it.status != TransactionStatus.CANCELED }
             .sortedBy { it.date }
             .take(nbToTake)
             .map(::mapTransaction)
 
-        return HomeTransactions(
+        return HomeTransactionsState(
             credits = credit,
             debits = debit
         )
     }
 
-    private fun mapTransaction(transaction: Transaction): HomeTransaction {
-        return HomeTransaction(
+    private fun mapTransaction(transaction: Transaction): HomeTransactionState {
+        return HomeTransactionState(
             id = transaction.id,
             amount = "${transaction.amount} ${transaction.currency}",
-            date = transaction.date.toString()
+            date = "${dateManager.formatDate(transaction.date)} - ${dateManager.formatTime(transaction.date)} "
         )
     }
+
+    // endregion
 }

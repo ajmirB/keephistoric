@@ -28,6 +28,9 @@ class HomeViewModel(
     private val _viewState = MutableStateFlow<HomeViewState>(HomeViewState.Loading)
     val viewState = _viewState.asStateFlow()
 
+    private var _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     // region Lifecycle
 
     init {
@@ -48,12 +51,21 @@ class HomeViewModel(
         }
     }
 
+    fun onRefresh() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _isRefreshing.update { true }
+            val currentAccount = getCurrentAccount()
+            loadAccounts(selectAccount = currentAccount)
+            _isRefreshing.update { false }
+        }
+    }
+
     fun onAccountClicked(id: String) {
         _viewState.update { state ->
             when (state) {
                 is HomeViewState.Data -> {
                     val accounts = state.accounts
-                    val currentAccount = accounts.firstOrNull { it.isSelected }
+                    val currentAccount = getCurrentAccount(accounts)
                     if (currentAccount?.id != id) {
                         // Get transactions
                         accounts.firstOrNull { it.id == id }
@@ -79,6 +91,7 @@ class HomeViewModel(
     // endregion
 
     private suspend fun loadAccounts(
+        selectAccount: HomeAccountState? = null,
         skipError: Boolean = true
     ) {
         accountRepository.getAccounts()
@@ -88,10 +101,9 @@ class HomeViewModel(
                     accounts = accountModel,
                     transactions = null
                 )
-                // Load the transactions for the first account
-                accountModel.firstOrNull()?.also { loadTransactions(it) }
                 // Display the accounts
                 _viewState.emit(data)
+                onAccountClicked((selectAccount ?: accountModel.firstOrNull())?.id.orEmpty())
             }
             .onFailure {
                 if (!skipError) {
@@ -125,6 +137,20 @@ class HomeViewModel(
                 }
             }
         }
+    }
+
+    private fun getCurrentAccount(
+        accounts: List<HomeAccountState>? = null
+    ): HomeAccountState? {
+        val loadedAccounts = accounts
+            ?: _viewState.value.let {
+                when (it) {
+                    is HomeViewState.Data -> it.accounts
+                    HomeViewState.Error -> emptyList()
+                    HomeViewState.Loading -> emptyList()
+                }
+            }
+        return loadedAccounts.firstOrNull { it.isSelected }
     }
 
     // region Mapper

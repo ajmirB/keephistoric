@@ -2,9 +2,14 @@ package com.ajmir.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.ajmir.ui.commons.resources.Colors
@@ -17,14 +22,24 @@ import com.ajmir.ui.home.viewmodel.HomeViewModel
 import org.koin.androidx.compose.get
 import com.ajmir.ui.R
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen() {
     val viewModel: HomeViewModel = get()
     val viewState by viewModel.viewState.collectAsState()
+    val refreshing by viewModel.isRefreshing.collectAsState()
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = refreshing,
+        onRefresh = viewModel::onRefresh
+    )
 
-    Column {
-        Logo()
-        Box(Modifier.background(Colors.background)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Colors.background)
+        .pullRefresh(pullRefreshState)
+    ) {
+        Column {
+            Logo()
             when (viewState) {
                 is HomeViewState.Data -> {
                     HomeView(
@@ -45,6 +60,12 @@ fun HomeScreen() {
                 }
             }
         }
+        if (viewState is HomeViewState.Data) {
+            PullRefreshIndicator(
+                refreshing = refreshing,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+        }
     }
-
 }

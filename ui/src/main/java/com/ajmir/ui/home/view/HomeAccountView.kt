@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.ajmir.ui.commons.resources.Colors
@@ -42,6 +43,7 @@ fun HomeAccountItem(
     onClick: () -> Unit
 ) {
     Box(modifier = Modifier
+        .alpha(if (account.isSelected) 1f else 0.7f)
         .background(Colors.accountBrushBackground, RoundedShape)
         .size(100.dp)
         .clickable(onClick = onClick)

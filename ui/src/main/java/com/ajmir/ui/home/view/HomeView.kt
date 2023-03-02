@@ -21,7 +21,10 @@ fun HomeView(
     onTransactionClicked: (String) -> Unit,
 ) {
     val scrollState = rememberScrollState()
-    Column(modifier = Modifier.verticalScroll(scrollState)) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(scrollState)
+    ) {
         if (viewState.accounts.isNotEmpty()) {
             HomeSection(
                 text = stringResource(id = R.string.home_section_account),

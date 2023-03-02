@@ -11,5 +11,6 @@ data class Transaction(
     val amount: String,
     val currency: String,
     val date: Date,
-    val type: TransactionType
+    val type: TransactionType,
+    val status: TransactionStatus
 )

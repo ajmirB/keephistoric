@@ -2,26 +2,29 @@ package com.ajmir.ui.home.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import com.ajmir.ui.R
 import com.ajmir.ui.commons.resources.Colors
 import com.ajmir.ui.commons.resources.Dimens
 import com.ajmir.ui.home.model.HomeViewState
 
 @Composable
-fun HomeDataView(
+fun HomeView(
     viewState: HomeViewState.Data,
     onAccountClicked: (String) -> Unit,
     onTransactionClicked: (String) -> Unit,
 ) {
-    Column {
+    val scrollState = rememberScrollState()
+    Column(modifier = Modifier.verticalScroll(scrollState)) {
         if (viewState.accounts.isNotEmpty()) {
             HomeSection(
-                text = "Accounts",
+                text = stringResource(id = R.string.home_section_account),
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Colors.backgroundSecondary)
@@ -37,7 +40,7 @@ fun HomeDataView(
             viewState.transactions
                 ?.takeIf { it.credits.size + it.debits.size > 0 }
                 ?.let {
-                    HomeTransactions(
+                    HomeTransactionsView(
                         transactions = it,
                         onTransactionClicked = onTransactionClicked
                     )
@@ -51,8 +54,9 @@ fun HomeSection(
     text: String,
     modifier: Modifier = Modifier,
 ) = Text(
-    text = text,
-    fontSize = Dimens.FontSize.h3,
-    color = Colors.secondary,
+    text = text.uppercase(),
+    color = Colors.section,
+    fontSize = Dimens.FontSize.h4,
+    fontWeight = FontWeight.Bold,
     modifier = modifier
 )

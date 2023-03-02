@@ -5,41 +5,54 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.ajmir.ui.R
 import com.ajmir.ui.commons.resources.Colors
 import com.ajmir.ui.commons.resources.Dimens
-import com.ajmir.ui.commons.resources.RoundedShape
-import com.ajmir.ui.home.model.HomeTransaction
-import com.ajmir.ui.home.model.HomeTransactions
+import com.ajmir.ui.home.model.HomeTransactionState
+import com.ajmir.ui.home.model.HomeTransactionsState
 
 @Composable
-fun HomeTransactions(
-    transactions: HomeTransactions,
+fun HomeTransactionsView(
+    transactions: HomeTransactionsState,
     onTransactionClicked: (String) -> Unit
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(all = Dimens.Spacing.medium),
-        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing.medium),
+    Column(
+        modifier = Modifier.padding(vertical = Dimens.Spacing.medium),
     ) {
+        // Credit
         transactions.credits.takeIf { it.isNotEmpty() }
             ?.let { credits ->
-                item { HomeSection("Credit") }
-                items(items = credits) {
-                    HomeTransaction(
+                // Sections
+                HomeSection(
+                    text = stringResource(id = R.string.home_section_credit),
+                    modifier = Modifier.padding(horizontal = Dimens.Spacing.medium)
+                )
+                // Items
+                credits.forEach {
+                    HomeTransactionView(
                         transaction = it,
                         onClick = { onTransactionClicked(it.id) }
                     )
                 }
             }
-
+        // Debit
         transactions.debits.takeIf { it.isNotEmpty() }
             ?.let { debits ->
-                item { HomeSection("Debit") }
-                items(items = debits) {
-                    HomeTransaction(
+                // Section
+                HomeSection(
+                    text = stringResource(id = R.string.home_section_debit),
+                    modifier = Modifier.padding(top = Dimens.Spacing.medium)
+                        .padding(horizontal = Dimens.Spacing.medium)
+                )
+                // Items
+                debits.forEach {
+                    HomeTransactionView(
                         transaction = it,
                         onClick = { onTransactionClicked(it.id) }
                     )
@@ -49,23 +62,41 @@ fun HomeTransactions(
 }
 
 @Composable
-private fun HomeTransaction(
-    transaction: HomeTransaction,
+private fun HomeTransactionView(
+    transaction: HomeTransactionState,
     onClick: () -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()
-        .background(Colors.backgroundSecondary, RoundedShape)
+    Column(modifier = Modifier
+        .fillMaxWidth()
         .clickable(onClick = onClick)
-        .padding(Dimens.Spacing.medium)
+        .background(Colors.background)
+        .padding(
+            horizontal = Dimens.Spacing.medium + Dimens.Spacing.high,
+            vertical = Dimens.Spacing.medium
+        )
+
     ) {
         Text(
             text = transaction.amount,
-            color = Colors.secondary,
+            color = Colors.title,
             fontSize = Dimens.FontSize.h2
         )
         Text(
             text = transaction.date,
+            color = Colors.text
         )
     }
+    Divider(
+        color = Colors.backgroundSecondary,
+        modifier = Modifier.padding(horizontal = Dimens.Spacing.medium)
+    )
+}
 
+@Preview
+@Composable
+private fun TransactionPreview() {
+    HomeTransactionView(
+        transaction = HomeTransactionState(id = "", "15 EUR", date = "5 avril 2012 - 15:23"),
+        onClick = {}
+    )
 }

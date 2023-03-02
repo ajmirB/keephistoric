@@ -4,8 +4,8 @@ sealed interface HomeViewState {
     object Loading: HomeViewState
 
     data class Data(
-        val accounts: List<HomeAccount>,
-        val transactions: HomeTransactions?
+        val accounts: List<HomeAccountState>,
+        val transactions: HomeTransactionsState?
     ): HomeViewState
 
     object Error: HomeViewState

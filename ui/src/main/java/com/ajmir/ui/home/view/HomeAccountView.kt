@@ -1,6 +1,5 @@
 package com.ajmir.ui.home.view
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,11 +13,11 @@ import androidx.compose.ui.unit.dp
 import com.ajmir.ui.commons.resources.Colors
 import com.ajmir.ui.commons.resources.Dimens
 import com.ajmir.ui.commons.resources.RoundedShape
-import com.ajmir.ui.home.model.HomeAccount
+import com.ajmir.ui.home.model.HomeAccountState
 
 @Composable
 fun HomeAccountView(
-    accounts: List<HomeAccount>,
+    accounts: List<HomeAccountState>,
     onAccountClicked: (String) -> Unit
 ) {
     LazyRow(
@@ -31,10 +30,7 @@ fun HomeAccountView(
         items(accounts) {
             HomeAccountItem(
                 account = it,
-                onClick = {
-                    Log.e("test", "HomeAccountView: onclick ", )
-                    onAccountClicked(it.id)
-                }
+                onClick = { onAccountClicked(it.id) }
             )
         }
     }
@@ -42,7 +38,7 @@ fun HomeAccountView(
 
 @Composable
 fun HomeAccountItem(
-    account: HomeAccount,
+    account: HomeAccountState,
     onClick: () -> Unit
 ) {
     Box(modifier = Modifier

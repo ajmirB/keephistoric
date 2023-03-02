@@ -3,8 +3,7 @@ package com.ajmir.transaction.model
 import java.util.*
 
 data class Transactions(
-    val credits: List<Transaction>,
-    val debits: List<Transaction>
+    val transactions: List<Transaction>
 )
 
 data class Transaction(

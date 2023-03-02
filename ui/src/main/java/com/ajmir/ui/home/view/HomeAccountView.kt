@@ -1,5 +1,6 @@
 package com.ajmir.ui.home.view
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -30,7 +31,10 @@ fun HomeAccountView(
         items(accounts) {
             HomeAccountItem(
                 account = it,
-                onClick = { onAccountClicked(it.id) }
+                onClick = {
+                    Log.e("test", "HomeAccountView: onclick ", )
+                    onAccountClicked(it.id)
+                }
             )
         }
     }

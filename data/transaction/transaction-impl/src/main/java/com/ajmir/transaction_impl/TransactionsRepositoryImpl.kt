@@ -13,7 +13,7 @@ class TransactionsRepositoryImpl(
     private val transactionApi: TransactionApi
 ): TransactionRepository {
 
-    override suspend fun getSummary(url: String): Result<Transactions> {
+    override suspend fun getAll(url: String): Result<Transactions> {
         return try {
             transactionApi.getTransactions(url)
                 .data
@@ -25,15 +25,7 @@ class TransactionsRepositoryImpl(
     }
 
     private fun mapToEntity(response: List<TransactionResponse>): Transactions {
-        val entities = response.mapNotNull(::mapToEntity)
-        return Transactions(
-            credits = entities
-                .filter { it.type == TransactionType.CREDIT }
-                .sortedBy { it.date },
-            debits = entities
-                .filter { it.type == TransactionType.DEBIT }
-                .sortedBy { it.date }
-        )
+        return Transactions(response.mapNotNull(::mapToEntity))
     }
 
     private fun mapToEntity(response: TransactionResponse): Transaction? {

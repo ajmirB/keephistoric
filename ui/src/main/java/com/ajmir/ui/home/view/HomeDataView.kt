@@ -2,6 +2,7 @@ package com.ajmir.ui.home.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
@@ -33,6 +34,14 @@ fun HomeDataView(
                 accounts = viewState.accounts,
                 onAccountClicked = onAccountClicked
             )
+            viewState.transactions
+                ?.takeIf { it.credits.size + it.debits.size > 0 }
+                ?.let {
+                    HomeTransactions(
+                        transactions = it,
+                        onTransactionClicked = onTransactionClicked
+                    )
+                }
         }
     }
 }
@@ -40,7 +49,7 @@ fun HomeDataView(
 @Composable
 fun HomeSection(
     text: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) = Text(
     text = text,
     fontSize = Dimens.FontSize.h3,

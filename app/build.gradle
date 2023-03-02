@@ -50,6 +50,7 @@ dependencies {
     implementation project(path: ':ui')
     implementation project(path: ':data:networking:retrofit')
     implementation project(path: ':data:account:account-impl')
+    implementation project(path: ':data:transaction:transaction-impl')
 
     implementation "androidx.core:core-ktx:${androidx.ktx}"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${androidx.lifecycle}"

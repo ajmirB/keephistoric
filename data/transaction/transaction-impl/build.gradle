@@ -1,0 +1,36 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.ajmir.transaction_impl'
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation project(path: ':data:transaction:transaction')
+
+    // Networking
+    implementation project(path: ":data:networking:retrofit")
+    implementation "com.squareup.retrofit2:retrofit:${network.retrofit}"
+    implementation "com.google.code.gson:gson:${google.gson}"
+
+    // Koin
+    implementation "io.insert-koin:koin-core:${koin.base}"
+    implementation "io.insert-koin:koin-android:${koin.android}"
+    
+    testImplementation 'junit:junit:4.13.2'
+}

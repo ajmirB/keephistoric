@@ -21,10 +21,13 @@ import com.ajmir.ui.home.view.HomeView
 import com.ajmir.ui.home.viewmodel.HomeViewModel
 import org.koin.androidx.compose.get
 import com.ajmir.ui.R
+import com.ajmir.ui.commons.view.AppBar
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onTransactionClicked: (String) -> Unit
+) {
     val viewModel: HomeViewModel = get()
     val viewState by viewModel.viewState.collectAsState()
     val refreshing by viewModel.isRefreshing.collectAsState()
@@ -39,13 +42,13 @@ fun HomeScreen() {
         .pullRefresh(pullRefreshState)
     ) {
         Column {
-            Logo()
+            AppBar()
             when (viewState) {
                 is HomeViewState.Data -> {
                     HomeView(
                         viewState = viewState as HomeViewState.Data,
                         onAccountClicked = viewModel::onAccountClicked,
-                        onTransactionClicked = viewModel::onTransactionClicked
+                        onTransactionClicked = onTransactionClicked
                     )
                 }
                 HomeViewState.Error -> {

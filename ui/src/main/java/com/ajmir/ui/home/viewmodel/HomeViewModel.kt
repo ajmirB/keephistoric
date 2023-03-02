@@ -1,5 +1,6 @@
 package com.ajmir.ui.home.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajmir.account.AccountRepository
@@ -75,10 +76,6 @@ class HomeViewModel(
                 }
             }
         }
-    }
-
-    fun onTransactionClicked(id: String) {
-
     }
 
     // endregion

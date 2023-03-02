@@ -12,4 +12,10 @@
     <string name="home_section_debit">Débit</string>
     <string name="home_transaction_error_message">Désolé, nous n\'avons pas pu récupérer vos transactions. Veuillez réessayez plus tard.</string>
     <string name="home_transaction_no_data_message">Il n\'y a aucune transaction à afficher</string>
+
+    <string name="transaction_title">Détail de la transaction</string>
+    <string name="transaction_amount_label">Montant</string>
+    <string name="transaction_information_label">Information</string>
+    <string name="transaction_reference_label">Réference</string>
+    <string name="transaction_address_label">Adresse</string>
 </resources>

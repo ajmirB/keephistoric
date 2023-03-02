@@ -12,4 +12,10 @@
     <string name="home_section_debit">Debit</string>
     <string name="home_transaction_error_message">Sorry, we couldn\'t retrieve yours transactions. Try again later.</string>
     <string name="home_transaction_no_data_message">There is no transactions to display</string>
+
+    <string name="transaction_title">Transaction detail</string>
+    <string name="transaction_amount_label">Amount</string>
+    <string name="transaction_information_label">Information</string>
+    <string name="transaction_reference_label">Reference</string>
+    <string name="transaction_address_label">Address</string>
 </resources>

@@ -13,14 +13,13 @@ object Colors {
     val title = Color(red = 0x3E, green = 0x4B, blue = 0x6F, alpha = 0xFF)
     val text = Color.Gray
     val section = Color(red = 0x98, green = 0xA9, blue = 0xDA, alpha = 0xFF)
+    val textDark = Color.DarkGray
 
     val loading = primary
     val error = Color(red = 0xBB, green = 0x5B, blue = 0x5B, alpha = 0xFF)
     val errorBackground = Color(red = 0xFA, green = 0xA7, blue = 0xA7, alpha = 0xFF)
     val warning = Color(red = 0xAF, green = 0x83, blue = 0x0, alpha = 0xFF)
     val warningBackground = Color(red = 0xF8, green = 0xE2, blue = 0xA1, alpha = 0xFF)
-
-
 
     val accountBrushBackground = Brush.verticalGradient(listOf(primary, secondary))
 }

@@ -8,10 +8,13 @@ data class TransactionsResponse(
 
 data class TransactionResponse(
     @SerializedName("TransactionId") val transactionId: String,
+    @SerializedName("TransactionReference") val reference: String,
     @SerializedName("CreditDebitIndicator") val creditDebitIndicator: String,
     @SerializedName("Status") val status: String,
     @SerializedName("ValueDateTime") val dateTime: String,
+    @SerializedName("TransactionInformation") val information: String,
     @SerializedName("Amount") val amount: TransactionAmountResponse,
+    @SerializedName("Address") val adress: String?,
 )
 
 data class TransactionAmountResponse(

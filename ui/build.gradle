@@ -1,23 +1,18 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
 }
 
 android {
-    namespace 'com.ajmir.mybank'
-    compileSdk rootProject.ext.compileSdkVersion
+    namespace 'com.ajmir.ui'
+    compileSdk 32
 
     defaultConfig {
-        applicationId "com.ajmir.mybank"
-        minSdk rootProject.ext.minSdkVersion
-        targetSdk rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        minSdk 23
+        targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
-        }
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -39,20 +34,12 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion '1.1.1'
     }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
-    }
 }
 
 dependencies {
-    implementation project(path: ':ui')
-    implementation project(path: ':data:networking:retrofit')
-    implementation project(path: ':data:account:account-impl')
+    implementation project(path: ':data:account:account')
 
     implementation "androidx.core:core-ktx:${androidx.ktx}"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${androidx.lifecycle}"
 
     // Compose
     def composeBom = platform("androidx.compose:compose-bom:${compose.bom}")
@@ -70,12 +57,8 @@ dependencies {
     implementation "io.insert-koin:koin-core:${koin.base}"
     implementation "io.insert-koin:koin-android:${koin.android}"
     implementation "io.insert-koin:koin-androidx-compose:${koin.compose}"
-    implementation "io.insert-koin:koin-androidx-navigation:${koin.android}"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:${compose.ui}"
-    debugImplementation "androidx.compose.ui:ui-tooling:${compose.ui}"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:${compose.ui}"
 }

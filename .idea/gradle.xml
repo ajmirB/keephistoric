@@ -10,6 +10,16 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/data" />
+            <option value="$PROJECT_DIR$/data/account" />
+            <option value="$PROJECT_DIR$/data/account/account" />
+            <option value="$PROJECT_DIR$/data/account/account-impl" />
+            <option value="$PROJECT_DIR$/data/networking" />
+            <option value="$PROJECT_DIR$/data/networking/retrofit" />
+            <option value="$PROJECT_DIR$/data/transaction" />
+            <option value="$PROJECT_DIR$/data/transaction/transaction" />
+            <option value="$PROJECT_DIR$/data/transaction/transaction-impl" />
+            <option value="$PROJECT_DIR$/ui" />
           </set>
         </option>
       </GradleProjectSettings>

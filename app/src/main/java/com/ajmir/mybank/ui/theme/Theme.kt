@@ -38,7 +38,6 @@ fun MyBankTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable
     MaterialTheme(
         colors = colors,
         typography = Typography,
-        shapes = Shapes,
         content = content
     )
 }

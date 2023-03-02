@@ -14,3 +14,8 @@ dependencyResolutionManagement {
 }
 rootProject.name = "My Bank"
 include ':app'
+include ':ui'
+
+include ':data:networking:retrofit'
+include ':data:account:account'
+include ':data:account:account-impl'

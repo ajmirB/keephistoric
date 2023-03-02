@@ -10,4 +10,6 @@
     <string name="home_section_account">Comptes</string>
     <string name="home_section_credit">Crédit</string>
     <string name="home_section_debit">Débit</string>
+    <string name="home_transaction_error_message">Désolé, nous n\'avons pas pu récupérer vos transactions. Veuillez réessayez plus tard.</string>
+    <string name="home_transaction_no_data_message">Il n\'y a aucune transaction à afficher</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.ajmir.ui.home.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajmir.account.AccountRepository
@@ -15,9 +16,7 @@ import com.ajmir.ui.home.model.HomeTransactionState
 import com.ajmir.ui.home.model.HomeTransactionsState
 import com.ajmir.ui.home.model.HomeViewState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -103,8 +102,15 @@ class HomeViewModel(
                     is HomeViewState.Data -> {
                         val transactions = transactionRepository
                             .getAll(account.transactionUrl)
-                            .getOrNull()
-                            ?.let { mapTransactions(it) }
+                            .let { result ->
+                                if (result.getOrNull() != null) {
+                                    mapTransactions(result.getOrNull()!!)
+                                } else if (result.exceptionOrNull() != null){
+                                    mapErrorTransactions(result.exceptionOrNull()!!)
+                                } else {
+                                    null
+                                }
+                            }
                         // Update the transactions for the selected account
                         state.copy(transactions = transactions)
                     }
@@ -128,22 +134,22 @@ class HomeViewModel(
 
     private fun mapTransactions(transactions: Transactions): HomeTransactionsState {
         val nbToTake = 2
-        val credit = transactions.transactions
-            .filter { it.type == TransactionType.CREDIT && it.status != TransactionStatus.CANCELED }
-            .sortedBy { it.date }
-            .take(nbToTake)
-            .map(::mapTransaction)
-
-        val debit = transactions.transactions
-            .filter { it.type == TransactionType.DEBIT && it.status != TransactionStatus.CANCELED }
-            .sortedBy { it.date }
-            .take(nbToTake)
-            .map(::mapTransaction)
-
         return HomeTransactionsState(
-            credits = credit,
-            debits = debit
+            credits = transactions.transactions
+                .filter { it.type == TransactionType.CREDIT && it.status != TransactionStatus.CANCELED }
+                .sortedBy { it.date }
+                .take(nbToTake)
+                .map(::mapTransaction),
+            debits = transactions.transactions
+                .filter { it.type == TransactionType.DEBIT && it.status != TransactionStatus.CANCELED }
+                .sortedBy { it.date }
+                .take(nbToTake)
+                .map(::mapTransaction)
         )
+    }
+
+    private fun mapErrorTransactions(error: Throwable): HomeTransactionsState {
+        return HomeTransactionsState(hasError = true)
     }
 
     private fun mapTransaction(transaction: Transaction): HomeTransactionState {

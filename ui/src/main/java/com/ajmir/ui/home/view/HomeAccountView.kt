@@ -42,7 +42,7 @@ fun HomeAccountItem(
     onClick: () -> Unit
 ) {
     Box(modifier = Modifier
-        .background(Colors.primary, RoundedShape)
+        .background(Colors.accountBrushBackground, RoundedShape)
         .size(100.dp)
         .clickable(onClick = onClick)
     ) {

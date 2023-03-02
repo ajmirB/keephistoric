@@ -37,14 +37,12 @@ fun HomeView(
                 accounts = viewState.accounts,
                 onAccountClicked = onAccountClicked
             )
-            viewState.transactions
-                ?.takeIf { it.credits.size + it.debits.size > 0 }
-                ?.let {
-                    HomeTransactionsView(
-                        transactions = it,
-                        onTransactionClicked = onTransactionClicked
-                    )
-                }
+            viewState.transactions?.let {
+                HomeTransactionsView(
+                    transactions = it,
+                    onTransactionClicked = onTransactionClicked
+                )
+            }
         }
     }
 }

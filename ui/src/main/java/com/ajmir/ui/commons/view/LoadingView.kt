@@ -17,7 +17,7 @@ fun LoadingScreen() {
         .clickable(enabled = false, onClick = {})
     ) {
         CircularProgressIndicator(
-            color = Colors.loadingProgressBar,
+            color = Colors.loading,
             modifier = Modifier.align(Alignment.Center)
         )
     }

@@ -1,8 +1,9 @@
 package com.ajmir.ui.home.model
 
 data class HomeTransactionsState(
-    val credits: List<HomeTransactionState>,
-    val debits: List<HomeTransactionState>,
+    val hasError: Boolean = false,
+    val credits: List<HomeTransactionState> = emptyList(),
+    val debits: List<HomeTransactionState> = emptyList(),
 )
 
 data class HomeTransactionState(

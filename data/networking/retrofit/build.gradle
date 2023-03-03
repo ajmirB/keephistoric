@@ -1,0 +1,37 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.ajmir.retrofit'
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+        buildConfigField("String", "BASE_URL", "\"https://run.mocky.io/v3/\"")
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation "com.google.code.gson:gson:${google.gson}"
+
+    // Networking
+    implementation "com.squareup.retrofit2:retrofit:${network.retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${network.retrofit}"
+    implementation "com.squareup.okhttp3:okhttp:${network.okhttp}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${network.okhttp}"
+
+    // Koin
+    implementation "io.insert-koin:koin-android:${koin.android}"
+
+    testImplementation 'junit:junit:4.13.2'
+}

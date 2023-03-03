@@ -1,0 +1,41 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'de.mannodermaus.android-junit5'
+}
+
+android {
+    namespace 'com.ajmir.account_impl'
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    // Interface
+    implementation project(path: ':data:account:account')
+
+    // Networking
+    implementation project(path: ":data:networking:retrofit")
+    implementation "com.squareup.retrofit2:retrofit:${network.retrofit}"
+    implementation "com.google.code.gson:gson:${google.gson}"
+
+    // Koin
+    implementation "io.insert-koin:koin-android:${koin.android}"
+
+    // Test
+    testImplementation "org.junit.jupiter:junit-jupiter:${test.junit5}"
+    testImplementation "io.mockk:mockk:${test.mockk}"
+    testImplementation "io.kotest:kotest-assertions-core:${test.kotestAssertions}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${test.coroutines}"
+}

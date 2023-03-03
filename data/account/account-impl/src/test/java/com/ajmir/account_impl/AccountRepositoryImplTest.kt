@@ -24,6 +24,16 @@ internal class AccountRepositoryImplTest {
 
     private lateinit var repository: AccountRepositoryImpl
 
+    val accountResponse = AccountResponse(
+        id = "123",
+        nickname = "John Snow",
+        type = "Personal",
+        subType = "CurrentAccount",
+        status = "Enabled",
+        currency = "EUR",
+        transactionUrl = "sdfdspofjsdp"
+    )
+
     @BeforeEach
     internal fun setUp() {
         repository = AccountRepositoryImpl(api)
@@ -102,56 +112,46 @@ internal class AccountRepositoryImplTest {
     }
 
     @Test
-    fun `mapToEntity, verifiy type integrity`() {
+    fun `mapToEntity, verify type integrity`() {
         // Personal
-        var accountResponse = getAccountResponse().copy(type = "personal")
+        var accountResponse = accountResponse.copy(type = "personal")
         var result = repository.mapToEntity(accountResponse)
         result.type shouldBe AccountType.PERSONAL
         // Unknown
-        accountResponse = getAccountResponse().copy(type = "dskdshkfs")
+        accountResponse = accountResponse.copy(type = "dskdshkfs")
         result = repository.mapToEntity(accountResponse)
         result.type shouldBe AccountType.UNKNOWN
     }
 
     @Test
-    fun `mapToEntity, verifiy subtype integrity`() {
+    fun `mapToEntity, verify subtype integrity`() {
         // Current
-        var accountResponse = getAccountResponse().copy(subType = "CurrEntacCount")
+        var accountResponse = accountResponse.copy(subType = "CurrEntacCount")
         var result = repository.mapToEntity(accountResponse)
         result.subtype shouldBe AccountSubtype.CURRENT
         // Saving
-        accountResponse = getAccountResponse().copy(subType = "sAvingaccOunt")
+        accountResponse = accountResponse.copy(subType = "sAvingaccOunt")
         result = repository.mapToEntity(accountResponse)
         result.subtype shouldBe AccountSubtype.SAVING
         // Unknown
-        accountResponse = getAccountResponse().copy(subType = "dskdshkfs")
+        accountResponse = accountResponse.copy(subType = "dskdshkfs")
         result = repository.mapToEntity(accountResponse)
         result.subtype shouldBe AccountSubtype.UNKNOWN
     }
 
     @Test
-    fun `mapToEntity, verifiy isEnabled integrity`() {
+    fun `mapToEntity, verify isEnabled integrity`() {
         // is Enabled
-        var accountResponse = getAccountResponse().copy(status = "eNabled")
+        var accountResponse = accountResponse.copy(status = "eNabled")
         var result = repository.mapToEntity(accountResponse)
         result.isEnabled shouldBe true
         // Unknown should return false
-        accountResponse = getAccountResponse().copy(status = "disabled")
+        accountResponse = accountResponse.copy(status = "disabled")
         result = repository.mapToEntity(accountResponse)
         result.isEnabled shouldBe false
         // Empty should return false
-        accountResponse = getAccountResponse().copy(status = "")
+        accountResponse = accountResponse.copy(status = "")
         result = repository.mapToEntity(accountResponse)
         result.isEnabled shouldBe false
     }
-
-    private fun getAccountResponse() = AccountResponse(
-        id = "123",
-        nickname = "John Snow",
-        type = "Personal",
-        subType = "CurrentAccount",
-        status = "Enabled",
-        currency = "EUR",
-        transactionUrl = "sdfdspofjsdp"
-    )
 }

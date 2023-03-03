@@ -1,6 +1,7 @@
 package com.ajmir.transaction_impl
 
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import com.ajmir.common.manager.DateManager
 import com.ajmir.transaction.TransactionRepository
 import com.ajmir.transaction.model.*
@@ -35,12 +36,13 @@ class TransactionsRepositoryImpl(
             ?.let { mapToDetailEntity(it)}
     }
 
-
-    private fun mapToEntity(response: List<TransactionResponse>): Transactions {
+    @VisibleForTesting
+    fun mapToEntity(response: List<TransactionResponse>): Transactions {
         return Transactions(response.mapNotNull(::mapToEntity))
     }
 
-    private fun mapToEntity(response: TransactionResponse): Transaction? {
+    @VisibleForTesting
+    fun mapToEntity(response: TransactionResponse): Transaction? {
         return dateManager.parse(response.dateTime)
             ?.let { date ->
                 Transaction(
@@ -62,7 +64,8 @@ class TransactionsRepositoryImpl(
             }
     }
 
-    private fun mapToDetailEntity(response: TransactionResponse): TransactionDetail? {
+    @VisibleForTesting
+    fun mapToDetailEntity(response: TransactionResponse): TransactionDetail? {
         return dateManager.parse(response.dateTime)
             ?.let { date ->
                 TransactionDetail(

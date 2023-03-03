@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'de.mannodermaus.android-junit5'
 }
 
 android {
@@ -23,8 +24,8 @@ android {
 dependencies {
     implementation "io.insert-koin:koin-android:${koin.android}"
 
+    // Test
     testImplementation "org.junit.jupiter:junit-jupiter:${test.junit5}"
-    testImplementation "io.mockk:mockk:${test.mockk}"
     testImplementation "io.kotest:kotest-assertions-core:${test.kotestAssertions}"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${test.coroutines}"
 }

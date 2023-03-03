@@ -1,10 +1,9 @@
 package com.ajmir.ui.home.viewmodel
 
-import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajmir.account.AccountRepository
-import com.ajmir.common.manager.DateManager
 import com.ajmir.transaction.TransactionRepository
 import com.ajmir.ui.home.mapper.HomeMapper
 import com.ajmir.ui.home.model.HomeAccountState
@@ -80,7 +79,8 @@ class HomeViewModel(
 
     // endregion
 
-    private suspend fun loadAccounts(
+    @VisibleForTesting
+    suspend fun loadAccounts(
         selectAccount: HomeAccountState? = null,
         skipError: Boolean = true
     ) {

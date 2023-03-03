@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'de.mannodermaus.android-junit5'
 }
 
 android {
@@ -58,7 +59,11 @@ dependencies {
     implementation "io.insert-koin:koin-android:${koin.android}"
     implementation "io.insert-koin:koin-androidx-compose:${koin.compose}"
 
-    testImplementation 'junit:junit:4.13.2'
+    // Test
+    testImplementation "org.junit.jupiter:junit-jupiter:${test.junit5}"
+    testImplementation "io.mockk:mockk:${test.mockk}"
+    testImplementation "io.kotest:kotest-assertions-core:${test.kotestAssertions}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${test.coroutines}"
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }

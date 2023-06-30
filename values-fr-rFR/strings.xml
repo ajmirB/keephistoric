@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <string name="welcome_header">dsfdsf {{amount}}</string>
+  <string name="app_name"></string>
+  <string name="error_retry"></string>
+  <string name="home_error_no_data_title"></string>
+  <string name="home_error_no_data_message"></string>
+  <string name="home_section_account"></string>
+  <string name="home_section_credit"></string>
+  <string name="home_section_debit"></string>
+  <string name="home_transaction_error_message"></string>
+  <string name="home_transaction_no_data_message"></string>
+  <string name="transaction_title"></string>
+  <string name="transaction_amount_label"></string>
+  <string name="transaction_information_label"></string>
+  <string name="transaction_reference_label"></string>
+  <string name="transaction_address_label">Adresse</string>
+  <string name="app_name">%2$s Ma Banque %1$s</string>
+  <string name="welcome_header"></string>
+</resources>
